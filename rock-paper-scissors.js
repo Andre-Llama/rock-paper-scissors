@@ -9,7 +9,7 @@ function computerPlay() {
 
 function playRound(e) {
   let computerSelection = computerPlay();
-  let playerInput = e.target.id;
+  let playerInput = e.currentTarget.id;
   let message = "";
 
   if (playerInput == 'rock') {
@@ -22,25 +22,24 @@ function playRound(e) {
 
   if (playerSelection == computerSelection) {
     message = `Tied! ${playerSelection[0]} and ${computerSelection[0]}`;
-    alert(message);
   } else if (playerSelection == SELECTION[0] && computerSelection == SELECTION[2] ||
     playerSelection == SELECTION[1] && computerSelection == SELECTION[0] ||
     playerSelection == SELECTION[2] && computerSelection == SELECTION[1]) {
     message = `You win! ${playerSelection[0]} beats ${computerSelection[0]}`;
     playerWins++;
-    alert(message);
   } else {
     message = `You lose! ${computerSelection[0]} beats ${playerSelection[0]}`;
     computerWins++;
-    alert(message);
   }
 
-  if (playerWins == 5) {
-    alert('you win!');
-  } else if (computerWins == 5) {
-    alert('computer wins!');
-  }
+  const msgBoard = document.querySelector('#msgBoard');
+  msgBoard.textContent = message;
 
+  if (playerWins >= 5) {
+    msgBoard.textContent = "You Win!";
+  } else if (computerWins >= 5) {
+    msgBoard.textContent = "Computer Wins!";
+  }
 }
 
 const rock = document.querySelector('#rock');
