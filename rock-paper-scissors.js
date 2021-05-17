@@ -7,9 +7,9 @@ function computerPlay() {
   return SELECTION[Math.floor(Math.random() * 3)];
 }
 
-function playRound(e) {
+function playRound() {
   let computerSelection = computerPlay();
-  let playerInput = e.currentTarget.id;
+  let playerInput = this.getAttribute('id');
   let message = "";
 
   if (playerInput == 'rock') {
@@ -36,16 +36,14 @@ function playRound(e) {
   msgBoard.textContent = message;
 
   if (playerWins >= 5) {
-    msgBoard.textContent = "You Win!";
+    msgBoard.textContent = "Gameover You Win!";
   } else if (computerWins >= 5) {
-    msgBoard.textContent = "Computer Wins!";
+    msgBoard.textContent = "Gameover Computer Wins!";
   }
 }
 
-const rock = document.querySelector('#rock');
-const paper = document.querySelector('#paper');
-const scissors = document.querySelector('#scissors');
+const buttons = document.querySelectorAll('button');
 
-rock.addEventListener('click', playRound);
-paper.addEventListener('click', playRound);
-scissors.addEventListener('click', playRound);
+buttons.forEach((button) => {
+  button.addEventListener('click', playRound);
+});
