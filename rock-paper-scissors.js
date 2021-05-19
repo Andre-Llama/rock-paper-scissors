@@ -1,49 +1,68 @@
-const SELECTION = [['rock', 0], ['paper', 1], ['scissors',2]];
-let playerWins = 0;
-let computerWins = 0;
+const SELECTION = ['rock', 'paper', 'scissors'];
+const msgBoard = document.querySelector('#msgBoard');
+let playerWins, computerWins, buttons;
 
-// randomly returns either 'Rock', 'Paper', or 'Scissors'
+//sets up the game
+function setUpGame() {
+  playerWins = 0;
+  computerWins = 0;
+  buttons = document.querySelectorAll('button');
+  msgBoard.textContent = "";
+
+  buttons.forEach((button) => {
+    button.disabled = false;
+    button.addEventListener('click', playRound);
+  });
+}
+
+// randomly chooses for computer
 function computerPlay() {
   return SELECTION[Math.floor(Math.random() * 3)];
 }
 
+// compares the choices of the player and computer and checks if either won the game
 function playRound() {
   let computerSelection = computerPlay();
-  let playerInput = this.getAttribute('id');
+  let playerSelection = this.getAttribute('id');
   let message = "";
 
-  if (playerInput == 'rock') {
-    playerSelection = SELECTION[0];
-  } else if (playerInput == 'paper') {
-    playerSelection = SELECTION[1];
-  } else if (playerInput == 'scissors') {
-    playerSelection = SELECTION[2];
-  }
+  let playerIndex = SELECTION.indexOf(playerSelection);
+  let computerIndex = SELECTION.indexOf(computerSelection);
 
-  if (playerSelection == computerSelection) {
-    message = `Tied! ${playerSelection[0]} and ${computerSelection[0]}`;
-  } else if (playerSelection == SELECTION[0] && computerSelection == SELECTION[2] ||
-    playerSelection == SELECTION[1] && computerSelection == SELECTION[0] ||
-    playerSelection == SELECTION[2] && computerSelection == SELECTION[1]) {
-    message = `You win! ${playerSelection[0]} beats ${computerSelection[0]}`;
-    playerWins++;
+  if (playerIndex != computerIndex) {
+    if (playerIndex == (computerIndex + 1) % 3) {
+      message = `You win! ${playerSelection} beats ${computerSelection}`;
+      playerWins++;
+    } else {
+      message = `You lose! ${computerSelection} beats ${playerSelection}`;
+      computerWins++;
+    }
   } else {
-    message = `You lose! ${computerSelection[0]} beats ${playerSelection[0]}`;
-    computerWins++;
+    message = `Tied! ${playerSelection} and ${computerSelection}`;
   }
 
-  const msgBoard = document.querySelector('#msgBoard');
   msgBoard.textContent = message;
 
-  if (playerWins >= 5) {
-    msgBoard.textContent = "Gameover You Win!";
-  } else if (computerWins >= 5) {
-    msgBoard.textContent = "Gameover Computer Wins!";
+  if (playerWins == 5) {
+    msgBoard.textContent = "You Win!";
+    endGame();
+  } else if (computerWins == 5) {
+    msgBoard.textContent = "Computer Wins!";
+    endGame();
   }
 }
 
-const buttons = document.querySelectorAll('button');
+// disables the buttons to end the game
+function endGame() {
+  buttons.forEach((button) => {
+    button.disabled = true;
+  });
 
-buttons.forEach((button) => {
-  button.addEventListener('click', playRound);
-});
+  const restartButton = document.createElement('button');
+  restartButton.textContent = 'Play Again';
+  restartButton.addEventListener('click', setUpGame);
+
+  msgBoard.appendChild(restartButton);
+}
+
+setUpGame();
