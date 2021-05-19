@@ -59,7 +59,10 @@ function endGame() {
   });
 
   const restartButton = document.createElement('button');
+  restartButton.setAttribute('id', 'restartButton');
   restartButton.textContent = 'Play Again';
+  restartButton.style.display = 'block';
+  restartButton.style.margin = '5% auto';
   restartButton.addEventListener('click', setUpGame);
 
   msgBoard.appendChild(restartButton);
