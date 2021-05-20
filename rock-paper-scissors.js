@@ -7,7 +7,7 @@ function setUpGame() {
   playerWins = 0;
   computerWins = 0;
   buttons = document.querySelectorAll('button');
-  msgBoard.textContent = "";
+  msgBoard.textContent = "Choose either Rock Paper or Scissors";
 
   buttons.forEach((button) => {
     button.disabled = false;
